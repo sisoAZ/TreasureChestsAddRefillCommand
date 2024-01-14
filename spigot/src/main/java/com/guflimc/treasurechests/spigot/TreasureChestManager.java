@@ -20,6 +20,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
 
 public class TreasureChestManager {
 
@@ -145,6 +146,51 @@ public class TreasureChestManager {
 
         return inv;
     }
+
+    public Inventory inventoryFor(Block block) {
+        BTreasureChest chest = chestAt(block);
+        if (chest == null) {
+            return null;
+        }
+
+        // get items and randomize winning chances
+        List<ItemStack> items = new ArrayList<>();
+        for (BTreasureLoot loot : chest.loot()) {
+            if (loot.chance() >= 100) {
+                items.add(loot.item().clone());
+                continue;
+            }
+
+            int amount = 0;
+            for (int i = 0; i < loot.item().getAmount(); i++) {
+                if (random.nextInt(100) < loot.chance()) {
+                    amount++;
+                }
+            }
+
+            if (amount > 0) {
+                ItemStack item = loot.item().clone();
+                item.setAmount(amount);
+                items.add(item);
+            }
+        }
+
+        // get size of chest
+        int size = isDoubleChest(block) ? 54 : 27;
+        String title = ChatColor.translateAlternateColorCodes('&', BukkitComponentSerializer.legacy().serialize(chest.title()));
+        Inventory inv = Bukkit.createInventory(null, size, title);
+
+        // fill chess with spread
+        if (chest.splitStacks()) {
+            spread(items, inv.getSize());
+        }
+
+        // put items in inventory
+        fill(items, inv);
+
+        return inv;
+    }
+
 
     private void spread(List<ItemStack> items, int invSize) {
         // spread
