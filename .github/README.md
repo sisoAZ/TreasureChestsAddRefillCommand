@@ -39,3 +39,8 @@ Data is stored in a flatfile database by default. You can also use mysql by edit
   }
 }
 ```
+
+## Command
+`/treasurechestrefill`
+
+When the command is executed, the contents of the chest are replaced with a set item, cooldown remains the same.
