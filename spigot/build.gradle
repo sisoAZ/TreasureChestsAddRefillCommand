@@ -3,13 +3,6 @@ plugins {
     id 'net.minecrell.plugin-yml.bukkit' version '0.5.1'
 }
 
-//configurations {
-//    rootImplementation {
-//        transitive false
-//    }
-//    implementation.extendsFrom rootImplementation
-//}
-
 dependencies {
     // required for build process
     annotationProcessor 'io.ebean:querybean-generator:13.+'
@@ -31,12 +24,6 @@ dependencies {
     implementation 'net.kyori:adventure-platform-bukkit:4.+'
     implementation 'net.kyori:adventure-text-minimessage:4.+'
 
-    // uncomment when generating migrations
-//    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
-//    implementation 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
-//    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
-
-
     runtimeOnly 'com.h2database:h2:2.1.214'
 }
 
@@ -48,6 +35,14 @@ bukkit {
     website = 'https://github.com/GufliMC/TreasureChests'
     apiVersion = '1.16'
 
+    commands {
+        treasurechestrefill {
+            description = 'refill treasurechest plugin'
+            permission = 'treasurechest'
+            usage = '/treasurechestrefill'
+        }
+    }
+
     permissions {
         'treasurechests.setup' {
             description = 'Allows setting up a new treasure chest'
@@ -56,5 +51,6 @@ bukkit {
     }
 }
 
-// I want it nice like that
-generateBukkitPluginDescription.group = "minecraft"
+generateBukkitPluginDescription {
+    group = 'minecraft'
+}
