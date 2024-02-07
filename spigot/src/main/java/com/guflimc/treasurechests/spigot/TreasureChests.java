@@ -42,6 +42,8 @@ public class TreasureChests extends JavaPlugin {
         pm.registerEvents(new PlayerChestSetupListener(manager, particleJobManager), this);
         pm.registerEvents(new WorldListener(particleJobManager), this);
 
+        this.getCommand("treasurechestrefill").setExecutor(new TreasureChestRefill(manager));
+
         getLogger().info("Enabled " + nameAndVersion() + ".");
     }
 
